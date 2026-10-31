@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traverse City Autumn Wine & Culinary Getaway | Nov 11–15</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            wine: {
+              50: '#fdf8f6',
+              100: '#f2e8e5',
+              700: '#8c2d19',
+              800: '#6e2010',
+              900: '#4a1208',
+            },
+            autumn: {
+              gold: '#d97706',
+              amber: '#b45309',
+              slate: '#334155',
+              cream: '#fafaf9',
+              card: '#ffffff'
+            }
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f7f6f4; color: #1c1917; }
+    .heading-font { font-family: 'Cinzel', serif; }
+    .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+    .chart-container { position: relative; width: 100%; height: 260px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-wine-700 selection:text-white">
+
+  <!-- TOP NAVIGATION HEADER -->
+  <header class="sticky top-0 z-50 glass-nav border-b border-stone-200/80 transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-full bg-wine-900 text-amber-400 flex items-center justify-center font-bold text-lg shadow-md">
+          <i class="fa-solid fa-wine-glass text-sm"></i>
+        </div>
+        <div>
+          <h1 class="heading-font text-xl font-bold text-stone-900 tracking-wide">Traverse City</h1>
+          <p class="text-xs text-stone-500 font-medium">Autumn Wine & Culinary Escape • Nov 11–15</p>
+        </div>
+      </div>
+      
+      <!-- Nav Tabs -->
+      <nav class="hidden md:flex space-x-1 bg-stone-100 p-1 rounded-xl border border-stone-200">
+        <button onclick="switchTab('dashboard')" id="nav-dashboard" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-150 bg-white text-wine-900 shadow-sm">
+          <i class="fa-solid fa-chart-pie mr-2"></i>Dashboard
+        </button>
+        <button onclick="switchTab('itinerary')" id="nav-itinerary" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-150 text-stone-600 hover:text-stone-900">
+          <i class="fa-solid fa-calendar-days mr-2"></i>3-Day Itinerary
+        </button>
+        <button onclick="switchTab('matrix')" id="nav-matrix" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-150 text-stone-600 hover:text-stone-900">
+          <i class="fa-solid fa-list-check mr-2"></i>Venue Matrix
+        </button>
+        <button onclick="switchTab('logistics')" id="nav-logistics" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-150 text-stone-600 hover:text-stone-900">
+          <i class="fa-solid fa-compass mr-2"></i>Logistics & Tips
+        </button>
+      </nav>
+    </div>
+
+    <!-- Mobile Nav Bar -->
+    <div class="flex md:hidden border-t border-stone-200 bg-white overflow-x-auto custom-scrollbar px-2 py-1">
+      <button onclick="switchTab('dashboard')" id="mobile-nav-dashboard" class="px-3 py-2 text-xs font-semibold whitespace-nowrap text-wine-900 font-bold">
+        Dashboard
+      </button>
+      <button onclick="switchTab('itinerary')" id="mobile-nav-itinerary" class="px-3 py-2 text-xs font-semibold whitespace-nowrap text-stone-600">
+        Itinerary
+      </button>
+      <button onclick="switchTab('matrix')" id="mobile-nav-matrix" class="px-3 py-2 text-xs font-semibold whitespace-nowrap text-stone-600">
+        Venue Matrix
+      </button>
+      <button onclick="switchTab('logistics')" id="mobile-nav-logistics" class="px-3 py-2 text-xs font-semibold whitespace-nowrap text-stone-600">
+        Logistics
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- 1. DASHBOARD VIEW -->
+    <div id="dashboard-view" class="space-y-8 animate-fade-in">
+      
+      <!-- Welcome Hero Banner -->
+      <div class="bg-gradient-to-r from-wine-900 via-wine-800 to-stone-900 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 max-w-3xl">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 mb-4">
+            <i class="fa-solid fa-leaf mr-2 text-xs"></i> Curated Autumn Escape
+          </span>
+          <h2 class="heading-font text-3xl sm:text-4xl font-bold mb-4 tracking-tight leading-tight">
+            Traverse City Getaway
+          </h2>
+          <p class="text-stone-300 text-base sm:text-lg leading-relaxed font-light">
+            This trip is structured for maximum comfort and geographic efficiency: exploring Downtown Front Street's culinary tasting crawl and handcrafted Italian pasta at <strong>Flying Noodle</strong> on Thursday, the iconic Old Mission Peninsula wine trail anchored by <strong>Brys Estate</strong>, <strong>Bonobo Winery</strong>, and waterfront dining at <strong>The Boathouse Restaurant</strong> on Friday, and a sit-down lunch at <strong>Oaky's Tavern</strong>, Leelanau Peninsula wine & beer, and ultra-upscale 16th-floor steakhouse dining at <strong>Aerie Restaurant & Lounge</strong> on Saturday.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-4 text-xs font-medium text-stone-300">
+            <span class="flex items-center"><i class="fa-regular fa-calendar-check mr-2 text-amber-400"></i> Nov 11–15</span>
+            <span class="flex items-center"><i class="fa-solid fa-wine-glass mr-2 text-amber-400"></i> 7 Estate Wineries</span>
+            <span class="flex items-center"><i class="fa-solid fa-utensils mr-2 text-amber-400"></i> Flying Noodle, Boathouse, Oaky's & Aerie</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between text-wine-900 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-stone-400">Estate Wineries</span>
+            <i class="fa-solid fa-wine-bottle text-lg"></i>
+          </div>
+          <div class="text-3xl font-bold text-stone-900">7</div>
+          <p class="text-xs text-stone-500 mt-1">Old Mission & Leelanau Peninsulas</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between text-amber-600 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-stone-400">Anchor Dinners</span>
+            <i class="fa-solid fa-utensils text-lg"></i>
+          </div>
+          <div class="text-3xl font-bold text-stone-900">3</div>
+          <p class="text-xs text-stone-500 mt-1">Flying Noodle, Boathouse, Aerie</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between text-emerald-600 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-stone-400">Tavern Lunch</span>
+            <i class="fa-solid fa-drumstick-bite text-lg"></i>
+          </div>
+          <div class="text-3xl font-bold text-stone-900">Oaky's</div>
+          <p class="text-xs text-stone-500 mt-1">Smoked Wings, Mac & Brisket Tacos</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between text-purple-600 mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-stone-400">Craft Brewery</span>
+            <i class="fa-solid fa-fire text-lg"></i>
+          </div>
+          <div class="text-3xl font-bold text-stone-900">Hop Lot</div>
+          <p class="text-xs text-stone-500 mt-1">Campfire Pits & Hot Mulled Cider</p>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+          <h3 class="heading-font text-lg font-bold text-stone-900 mb-1">Itinerary Category Breakdown</h3>
+          <p class="text-xs text-stone-500 mb-4">Distribution of curated stops across your getaway</p>
+          <div class="chart-container">
+            <canvas id="categoryChart"></canvas>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+          <h3 class="heading-font text-lg font-bold text-stone-900 mb-1">Culinary & Beverage Profile</h3>
+          <p class="text-xs text-stone-500 mb-4">Balance of dining styles and regional tasting experiences</p>
+          <div class="chart-container">
+            <canvas id="profileChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Corridor Cards -->
+      <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+        <h3 class="heading-font text-lg font-bold text-stone-900 mb-4">Geographic Focus Areas</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-4 rounded-xl bg-stone-50 border border-stone-200">
+            <span class="text-xs font-bold uppercase text-amber-700 tracking-wider">Thursday</span>
+            <h4 class="font-bold text-stone-900 text-sm mt-1">Downtown TC Corridor</h4>
+            <p class="text-xs text-stone-600 mt-2 leading-relaxed">
+              Breakfast at Common Good Bakery, artisanal food crawl along Front Street, and hand-extruded fresh pasta at Flying Noodle.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-wine-50 border border-wine-100">
+            <span class="text-xs font-bold uppercase text-wine-900 tracking-wider">Friday</span>
+            <h4 class="font-bold text-stone-900 text-sm mt-1">Old Mission Peninsula</h4>
+            <p class="text-xs text-stone-600 mt-2 leading-relaxed">
+              M-37 wine trail featuring Brys Estate towers, Bowers Harbor, Chateau Chantal, Bonobo Winery, Mari cave tour, and Boathouse dinner.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+            <span class="text-xs font-bold uppercase text-amber-800 tracking-wider">Saturday</span>
+            <h4 class="font-bold text-stone-900 text-sm mt-1">Grawn, Leelanau & Acme Tower</h4>
+            <p class="text-xs text-stone-600 mt-2 leading-relaxed">
+              Lunch at Oaky's Tavern, MAWBY sparkling wines, Shady Lane Cellars, Hop Lot outdoor campfires, and 16th-floor dinner at Aerie.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. 3-DAY ITINERARY VIEW -->
+    <div id="itinerary-view" class="hidden space-y-8 animate-fade-in">
+      
+      <!-- Day Selector Tabs -->
+      <div class="flex space-x-2 border-b border-stone-200 pb-4 overflow-x-auto custom-scrollbar">
+        <button onclick="showDay('day-thu')" id="tab-day-thu" class="day-tab px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-wine-900 text-white shadow-sm">
+          Thursday, Nov 12
+        </button>
+        <button onclick="showDay('day-fri')" id="tab-day-fri" class="day-tab px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-stone-600 hover:bg-stone-100">
+          Friday, Nov 13
+        </button>
+        <button onclick="showDay('day-sat')" id="tab-day-sat" class="day-tab px-5 py-2.5 rounded-xl font-bold text-sm transition-all bg-white text-stone-600 hover:bg-stone-100">
+          Saturday, Nov 14
+        </button>
+      </div>
+
+      <!-- THURSDAY CONTENT -->
+      <div id="day-thu" class="day-content space-y-6">
+        <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex items-start space-x-3">
+          <i class="fa-solid fa-utensils text-amber-600 text-lg mt-0.5"></i>
+          <div>
+            <h4 class="font-bold text-amber-900 text-sm">Thursday Focus: Downtown Gourmet Crawl & Handcrafted Pasta</h4>
+            <p class="text-xs text-amber-800 mt-1">Savor organic stone-milled sourdough, olive oil and preserve tastings, local fruit specialties, and fresh pasta in downtown TC.</p>
+          </div>
+        </div>
+
+        <div class="relative border-l-2 border-wine-900/20 ml-4 pl-6 space-y-8">
+          
+          <!-- Stop 1 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 9:30 AM – 10:45 AM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">Artisanal Bakery</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Common Good Bakery</h3>
+              <p class="text-xs text-stone-500 mb-3">Downtown Traverse City</p>
+              <p class="text-sm text-stone-600 leading-relaxed">
+                Organic stone-milled sourdough pastries, whipped ricotta toast with blistered heirloom tomatoes, croque madame, and espresso drinks.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stop 2 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 11:00 AM – 3:00 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-900">Gourmet Tasting Crawl</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Downtown TC Gourmet Artisan Crawl</h3>
+              <p class="text-xs text-stone-500 mb-3">Front Street Covered Brick Storefronts</p>
+              <ul class="text-sm text-stone-600 space-y-2">
+                <li class="flex items-start"><i class="fa-solid fa-bottle-droplet text-amber-600 mt-1 mr-2 text-xs"></i> <span><strong>Fustini's Oils & Vinegars:</strong> Interactive tasting bar featuring EVOO and 18-year aged balsamics.</span></li>
+                <li class="flex items-start"><i class="fa-solid fa-jar text-amber-600 mt-1 mr-2 text-xs"></i> <span><strong>American Spoon:</strong> Small-batch Michigan fruit preserves, cherry butter, and condiments.</span></li>
+                <li class="flex items-start"><i class="fa-solid fa-wine-glass text-amber-600 mt-1 mr-2 text-xs"></i> <span><strong>Cherry Republic:</strong> Cherry wines, hard ciders, cherry salsas, and dark chocolate cherries.</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Stop 3 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-wine-50/50 p-6 rounded-2xl border border-wine-100 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 5:30 PM – 7:30 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-wine-900 text-white">Italian Dinner Anchor</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Flying Noodle</h3>
+              <p class="text-xs text-stone-500 mb-3">136 E Front St • Downtown TC</p>
+              <p class="text-sm text-stone-600 leading-relaxed mb-3">
+                Cozy, vibrant Italian eatery in downtown Traverse City specializing in fresh, scratch-made pasta extruded daily.
+              </p>
+              <div class="p-3 bg-white rounded-xl border border-wine-100 text-xs text-stone-600 space-y-1">
+                <span class="font-bold text-wine-900 block mb-1">🍝 Menu Highlights:</span>
+                <div>• <strong>Starters:</strong> Garlic Dots with butter and parmesan, Crispy Arancini, Whipped Ricotta.</div>
+                <div>• <strong>Fresh Pastas:</strong> Tagliatelle Bolognese, Rigatoni Alla Vodka, and Creamy Truffle Cacio e Pepe.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FRIDAY CONTENT -->
+      <div id="day-fri" class="day-content hidden space-y-6">
+        <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex items-start space-x-3">
+          <i class="fa-solid fa-wine-glass text-amber-600 text-lg mt-0.5"></i>
+          <div>
+            <h4 class="font-bold text-amber-900 text-sm">Friday Focus: Old Mission Peninsula Wine Trail & Waterfront Fine Dining</h4>
+            <p class="text-xs text-amber-800 mt-1">Five estate wine tasting stops along M-37 capped off with waterfront dining at Bowers Harbor.</p>
+          </div>
+        </div>
+
+        <div class="relative border-l-2 border-wine-900/20 ml-4 pl-6 space-y-8">
+          
+          <!-- Stop 1 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 9:30 AM – 11:00 AM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">Brunch</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Red Spire Brunch House</h3>
+              <p class="text-xs text-stone-500 mb-3">The Village at Grand Traverse Commons</p>
+              <p class="text-sm text-stone-600 leading-relaxed">
+                Stuffed French toast, savory omelets, and eggs Benedict inside historic Mercato.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stop 2 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm border-l-4 border-l-wine-900">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 11:30 AM – 1:00 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-wine-100 text-wine-900">Anchor Vineyard</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Brys Estate Vineyard & Winery</h3>
+              <p class="text-xs text-stone-500 mb-3">3309 Blue Water Rd • Old Mission Peninsula</p>
+              <p class="text-sm text-stone-600 leading-relaxed mb-3">
+                155-acre estate. Enjoy indoor seated tastings featuring Wine Tasting Towers, Reserve Gewürztraminer, Pinot Gris, and artisanal charcuterie.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stop 3 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 1:15 PM – 2:15 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">Winery Stop</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Bowers Harbor Vineyards</h3>
+              <p class="text-xs text-stone-500 mb-3">2896 Bowers Harbor Rd • Old Mission Peninsula</p>
+              <p class="text-sm text-stone-600 leading-relaxed">
+                Unpretentious tasting room known for crisp Pinot Grigios, single-vineyard Rieslings, and estate hard ciders.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stop 4 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 2:30 PM – 3:30 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">Winery Stop</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Chateau Chantal</h3>
+              <p class="text-xs text-stone-500 mb-3">15900 Rue de Vin • Old Mission Peninsula</p>
+              <p class="text-sm text-stone-600 leading-relaxed">
+                Perched on a high ridge offering panoramic bay views, sparkling wine flights, and Michigan ice wines.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stop 5 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 3:45 PM – 4:45 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">Winery Stop</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Bonobo Winery</h3>
+              <p class="text-xs text-stone-500 mb-3">12011 S Center Rd • Old Mission Peninsula</p>
+              <p class="text-sm text-stone-600 leading-relaxed">
+                Rustic-chic lodge perched high with West Bay vistas. Features estate Pinot Gris, Sauvignon Blanc, Chardonnay, and small plates.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stop 6 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 5:00 PM – 6:15 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">Cave Tour & Flight</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Mari Vineyards</h3>
+              <p class="text-xs text-stone-500 mb-3">8175 Center Rd • Old Mission Peninsula</p>
+              <p class="text-sm text-stone-600 leading-relaxed">
+                Italianate stone estate featuring underground wine barrel caves. Enjoy a cave tour and seated flight of estate wines.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stop 7 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-stone-900 border-4 border-white shadow"></div>
+            <div class="bg-stone-900 text-white p-6 rounded-2xl shadow-md">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-amber-400 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 6:30 PM – 8:30 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500 text-stone-950">Waterfront Fine Dining</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold">The Boathouse Restaurant</h3>
+              <p class="text-xs text-stone-400 mb-3">2816 Bowers Harbor Rd • Bowers Harbor</p>
+              <p class="text-sm text-stone-300 leading-relaxed mb-3">
+                Cottage-style elegance on Bowers Harbor. Highlights include pan-seared Great Lakes whitefish, Australian rack of lamb, oysters, and prime steaks.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SATURDAY CONTENT -->
+      <div id="day-sat" class="day-content hidden space-y-6">
+        <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 flex items-start space-x-3">
+          <i class="fa-solid fa-drumstick-bite text-amber-600 text-lg mt-0.5"></i>
+          <div>
+            <h4 class="font-bold text-amber-900 text-sm">Saturday Focus: Oaky's Tavern, Leelanau Wineries, Hop Lot & Aerie Steakhouse</h4>
+            <p class="text-xs text-amber-800 mt-1">Start with Oaky's smoked wings and brisket tacos, explore sparkling and estate wines, hit Hop Lot's outdoor fire pits, and finish at Aerie.</p>
+          </div>
+        </div>
+
+        <div class="relative border-l-2 border-wine-900/20 ml-4 pl-6 space-y-8">
+          
+          <!-- Stop 1 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-amber-600 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm border-l-4 border-l-amber-600">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-amber-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 12:00 PM – 1:30 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-900">Sit-Down Tavern Lunch</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Oaky's Tavern</h3>
+              <p class="text-xs text-stone-500 mb-3">9205 US-31 • Grawn</p>
+              <p class="text-sm text-stone-600 leading-relaxed mb-3">
+                Local legend for house-smoked BBQ and tavern comfort food. 
+              </p>
+              <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-stone-700 space-y-1">
+                <span class="font-bold text-amber-900 block mb-1">🍗 Must-Try Dishes:</span>
+                <div>• <strong>Jumbo Wings:</strong> Smoked daily, tossed in Dry Rub, Honey Jalapeño, or Chipotle BBQ.</div>
+                <div>• <strong>Smokehouse Mac:</strong> Cavatappi tossed in house cheese sauce, topped with smoked pulled pork.</div>
+                <div>• <strong>Tacos & Burgers:</strong> Brisket Tacos, Thai Pork Tacos, or half-pound Olive Burgers.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stop 2 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 2:00 PM – 3:00 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">Sparkling Winery</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">MAWBY Sparkling Wines</h3>
+              <p class="text-xs text-stone-500 mb-3">4519 Elm Valley Rd • Suttons Bay</p>
+              <p class="text-sm text-stone-600 leading-relaxed">
+                Michigan's premier dedicated producer of traditional-method sparkling wines paired with savory bites.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stop 3 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-wine-900 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-wine-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 3:15 PM – 4:15 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-700">Estate Winery</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Shady Lane Cellars</h3>
+              <p class="text-xs text-stone-500 mb-3">9580 E Shady Ln • Suttons Bay</p>
+              <p class="text-sm text-stone-600 leading-relaxed">
+                100% estate-grown, SIP-certified sustainable Dry Riesling, Pinot Blanc, and estate white blends in a stone building.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stop 4 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-purple-600 border-4 border-white shadow"></div>
+            <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-purple-900 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 4:30 PM – 5:45 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-900">Fireside Craft Beer</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold text-stone-900">Hop Lot Brewing Co.</h3>
+              <p class="text-xs text-stone-500 mb-3">658 S West Bay Shore Dr • Suttons Bay</p>
+              <p class="text-sm text-stone-600 leading-relaxed">
+                Soaring pine grove beer garden with outdoor campfire pits, craft IPAs, hot mulled cider, soft pretzels with beer cheese, and s'mores kits.
+              </p>
+            </div>
+          </div>
+
+          <!-- Stop 5 -->
+          <div class="relative group">
+            <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-stone-900 border-4 border-white shadow"></div>
+            <div class="bg-stone-900 text-white p-6 rounded-2xl shadow-md">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <span class="text-xs font-bold text-amber-400 uppercase tracking-wider"><i class="fa-regular fa-clock mr-1"></i> 6:30 PM – 8:30 PM</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500 text-stone-950">16th-Floor Ultra-Upscale Steakhouse</span>
+              </div>
+              <h3 class="heading-font text-xl font-bold">Aerie Restaurant & Lounge</h3>
+              <p class="text-xs text-stone-400 mb-3">100 Grand Traverse Village Blvd • Acme Tower (16th Floor)</p>
+              <p class="text-sm text-stone-300 leading-relaxed mb-3">
+                360-degree glass views of Grand Traverse Bay. Prime cuts including Bone-In Ribeye, Center-Cut Filet Mignon, Wagyu Strip, lobster tails, and craft cocktails.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 3. DESTINATION MATRIX VIEW -->
+    <div id="matrix-view" class="hidden space-y-6 animate-fade-in">
+      
+      <!-- Search & Controls -->
+      <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm space-y-4">
+        <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+          <div class="relative w-full md:w-96">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-stone-400 text-sm"></i>
+            <input type="text" id="matrixSearch" onkeyup="filterMatrix()" placeholder="Search venues, dishes, varietals..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-wine-900/20 focus:border-wine-900 transition">
+          </div>
+          
+          <div class="flex flex-wrap gap-2 w-full md:w-auto">
+            <button onclick="setMatrixFilter('all')" class="matrix-btn px-4 py-2 rounded-lg text-xs font-bold bg-wine-900 text-white">All Stops</button>
+            <button onclick="setMatrixFilter('winery')" class="matrix-btn px-4 py-2 rounded-lg text-xs font-bold bg-stone-100 text-stone-600 hover:bg-stone-200">Wineries</button>
+            <button onclick="setMatrixFilter('dining')" class="matrix-btn px-4 py-2 rounded-lg text-xs font-bold bg-stone-100 text-stone-600 hover:bg-stone-200">Dining</button>
+            <button onclick="setMatrixFilter('brewery')" class="matrix-btn px-4 py-2 rounded-lg text-xs font-bold bg-stone-100 text-stone-600 hover:bg-stone-200">Brewery/Gourmet</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Matrix Cards Grid -->
+      <div id="matrixGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Brys -->
+        <div class="matrix-card bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden" data-type="winery">
+          <div class="p-5 border-b border-stone-100 bg-stone-50/50 flex justify-between items-start">
+            <div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-wine-100 text-wine-900">Winery</span>
+              <h4 class="heading-font text-lg font-bold text-stone-900 mt-1">Brys Estate Vineyard</h4>
+            </div>
+            <span class="text-xs text-stone-400 font-medium">Old Mission</span>
+          </div>
+          <div class="p-5 space-y-2 text-xs text-stone-600">
+            <p><strong>Offerings:</strong> Pinot Gris, Gewürztraminer, Wine Towers, Charcuterie.</p>
+            <p><strong>Highlights:</strong> 155-acre estate, indoor mahogany seated tasting room.</p>
+          </div>
+        </div>
+
+        <!-- Oaky's -->
+        <div class="matrix-card bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden" data-type="dining">
+          <div class="p-5 border-b border-stone-100 bg-stone-50/50 flex justify-between items-start">
+            <div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900">Tavern Lunch</span>
+              <h4 class="heading-font text-lg font-bold text-stone-900 mt-1">Oaky's Tavern</h4>
+            </div>
+            <span class="text-xs text-stone-400 font-medium">Grawn</span>
+          </div>
+          <div class="p-5 space-y-2 text-xs text-stone-600">
+            <p><strong>Offerings:</strong> Smoked Jumbo Wings, Smokehouse Mac, Brisket Tacos, Draft Beer.</p>
+            <p><strong>Highlights:</strong> Local tavern comfort, Saturday sit-down lunch.</p>
+          </div>
+        </div>
+
+        <!-- Flying Noodle -->
+        <div class="matrix-card bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden" data-type="dining">
+          <div class="p-5 border-b border-stone-100 bg-stone-50/50 flex justify-between items-start">
+            <div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900">Italian Dining</span>
+              <h4 class="heading-font text-lg font-bold text-stone-900 mt-1">Flying Noodle</h4>
+            </div>
+            <span class="text-xs text-stone-400 font-medium">Downtown TC</span>
+          </div>
+          <div class="p-5 space-y-2 text-xs text-stone-600">
+            <p><strong>Offerings:</strong> Hand-extruded pasta, Tagliatelle Bolognese, Rigatoni Vodka, Arancini.</p>
+            <p><strong>Highlights:</strong> Cozy downtown spot with daily fresh extruded pasta.</p>
+          </div>
+        </div>
+
+        <!-- Boathouse -->
+        <div class="matrix-card bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden" data-type="dining">
+          <div class="p-5 border-b border-stone-100 bg-stone-50/50 flex justify-between items-start">
+            <div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900">Fine Dining</span>
+              <h4 class="heading-font text-lg font-bold text-stone-900 mt-1">The Boathouse</h4>
+            </div>
+            <span class="text-xs text-stone-400 font-medium">Bowers Harbor</span>
+          </div>
+          <div class="p-5 space-y-2 text-xs text-stone-600">
+            <p><strong>Offerings:</strong> Great Lakes Whitefish, Rack of Lamb, Fresh Oysters, Prime Steaks.</p>
+            <p><strong>Highlights:</strong> Waterfront views on Bowers Harbor.</p>
+          </div>
+        </div>
+
+        <!-- Aerie -->
+        <div class="matrix-card bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden" data-type="dining">
+          <div class="p-5 border-b border-stone-100 bg-stone-50/50 flex justify-between items-start">
+            <div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-900">Steakhouse</span>
+              <h4 class="heading-font text-lg font-bold text-stone-900 mt-1">Aerie Restaurant & Lounge</h4>
+            </div>
+            <span class="text-xs text-stone-400 font-medium">Acme / East Bay</span>
+          </div>
+          <div class="p-5 space-y-2 text-xs text-stone-600">
+            <p><strong>Offerings:</strong> Prime Ribeye, Filet Mignon, Wagyu Strip, Lobster Tail, Craft Cocktails.</p>
+            <p><strong>Highlights:</strong> 16th-floor panoramic 360-degree glass views of Grand Traverse Bay.</p>
+          </div>
+        </div>
+
+        <!-- Hop Lot -->
+        <div class="matrix-card bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden" data-type="brewery">
+          <div class="p-5 border-b border-stone-100 bg-stone-50/50 flex justify-between items-start">
+            <div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-900">Craft Brewery</span>
+              <h4 class="heading-font text-lg font-bold text-stone-900 mt-1">Hop Lot Brewing Co.</h4>
+            </div>
+            <span class="text-xs text-stone-400 font-medium">Suttons Bay</span>
+          </div>
+          <div class="p-5 space-y-2 text-xs text-stone-600">
+            <p><strong>Offerings:</strong> Outdoor Campfire Pits, Craft Beers, Hot Mulled Cider, Soft Pretzels, S'mores.</p>
+            <p><strong>Highlights:</strong> Soaring pine grove beer garden with roaring fires.</p>
+          </div>
+        </div>
+
+        <!-- Bonobo -->
+        <div class="matrix-card bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden" data-type="winery">
+          <div class="p-5 border-b border-stone-100 bg-stone-50/50 flex justify-between items-start">
+            <div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-wine-100 text-wine-900">Winery</span>
+              <h4 class="heading-font text-lg font-bold text-stone-900 mt-1">Bonobo Winery</h4>
+            </div>
+            <span class="text-xs text-stone-400 font-medium">Old Mission</span>
+          </div>
+          <div class="p-5 space-y-2 text-xs text-stone-600">
+            <p><strong>Offerings:</strong> Pinot Gris, Sauvignon Blanc, Chardonnay, Small Plates.</p>
+            <p><strong>Highlights:</strong> Hilltop views overlooking West Grand Traverse Bay.</p>
+          </div>
+        </div>
+
+        <!-- Mari -->
+        <div class="matrix-card bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden" data-type="winery">
+          <div class="p-5 border-b border-stone-100 bg-stone-50/50 flex justify-between items-start">
+            <div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-wine-100 text-wine-900">Winery</span>
+              <h4 class="heading-font text-lg font-bold text-stone-900 mt-1">Mari Vineyards</h4>
+            </div>
+            <span class="text-xs text-stone-400 font-medium">Old Mission</span>
+          </div>
+          <div class="p-5 space-y-2 text-xs text-stone-600">
+            <p><strong>Offerings:</strong> Estate Wine Flights, Barrel-Aged Whites, Artisanal Cheeses.</p>
+            <p><strong>Highlights:</strong> Italianate stone castle and subterranean wine cave tours.</p>
+          </div>
+        </div>
+
+        <!-- MAWBY -->
+        <div class="matrix-card bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden" data-type="winery">
+          <div class="p-5 border-b border-stone-100 bg-stone-50/50 flex justify-between items-start">
+            <div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-wine-100 text-wine-900">Winery</span>
+              <h4 class="heading-font text-lg font-bold text-stone-900 mt-1">MAWBY Sparkling Wines</h4>
+            </div>
+            <span class="text-xs text-stone-400 font-medium">Suttons Bay</span>
+          </div>
+          <div class="p-5 space-y-2 text-xs text-stone-600">
+            <p><strong>Offerings:</strong> Traditional-Method Sparkling Flights, Blanc de Blancs, Savory Bites.</p>
+            <p><strong>Highlights:</strong> Michigan's premier sparkling wine producer.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4. LOGISTICS & TRAVEL CHECKLIST VIEW -->
+    <div id="logistics-view" class="hidden space-y-6 animate-fade-in">
+      
+      <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm space-y-6">
+        <h3 class="heading-font text-xl font-bold text-stone-900">Autumn Travel & Seasonal Guidelines</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-4 rounded-xl bg-stone-50 border border-stone-200/60">
+            <i class="fa-solid fa-sun text-amber-600 text-xl mb-2"></i>
+            <h4 class="font-bold text-stone-900 text-sm">Early Sunsets (5:15 PM)</h4>
+            <p class="text-xs text-stone-500 mt-1">Plan winery transitions between 11:00 AM and 4:30 PM to maximize daylight.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-stone-50 border border-stone-200/60">
+            <i class="fa-solid fa-car text-amber-600 text-xl mb-2"></i>
+            <h4 class="font-bold text-stone-900 text-sm">Peninsula Driving</h4>
+            <p class="text-xs text-stone-500 mt-1">Allow 20–30 minutes between Old Mission and Leelanau Peninsula venues.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-stone-50 border border-stone-200/60">
+            <i class="fa-solid fa-shirt text-amber-600 text-xl mb-2"></i>
+            <h4 class="font-bold text-stone-900 text-sm">Layered Outerwear</h4>
+            <p class="text-xs text-stone-500 mt-1">Ideal for Hop Lot's outdoor campfire pits in mid-November.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Checklist -->
+      <div class="bg-white p-6 rounded-2xl border border-stone-200/80 shadow-sm">
+        <h3 class="heading-font text-xl font-bold text-stone-900 mb-4">Trip Preparation Checklist</h3>
+        <div class="space-y-3">
+          <label class="flex items-center space-x-3 text-sm text-stone-700 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-stone-300 text-wine-900 focus:ring-wine-900" checked>
+            <span>Confirm Brys Estate seated tasting</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-stone-700 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-stone-300 text-wine-900 focus:ring-wine-900" checked>
+            <span>Confirm table at Flying Noodle for Thursday night</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-stone-700 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-stone-300 text-wine-900 focus:ring-wine-900" checked>
+            <span>Confirm table at The Boathouse for Friday night</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-stone-700 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-stone-300 text-wine-900 focus:ring-wine-900" checked>
+            <span>Confirm table at Aerie Restaurant & Lounge for Saturday night</span>
+          </label>
+          <label class="flex items-center space-x-3 text-sm text-stone-700 cursor-pointer">
+            <input type="checkbox" class="w-4 h-4 rounded border-stone-300 text-wine-900 focus:ring-wine-900">
+            <span>Book Mari Vineyards Wine Cave Tour</span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="bg-stone-900 text-stone-400 py-6 border-t border-stone-800 mt-auto text-xs text-center">
+    <div class="max-w-7xl mx-auto px-4">
+      <p>Traverse City November Getaway Guide • Nov 11–15</p>
+    </div>
+  </footer>
+
+  <script>
+    // Tab Switching Logic
+    function switchTab(tabId) {
+      ['dashboard', 'itinerary', 'matrix', 'logistics'].forEach(id => {
+        document.getElementById(`${id}-view`).classList.add('hidden');
+        const btn = document.getElementById(`nav-${id}`);
+        if (btn) {
+          btn.classList.remove('bg-white', 'text-wine-900', 'shadow-sm');
+          btn.classList.add('text-stone-600');
+        }
+        const mobBtn = document.getElementById(`mobile-nav-${id}`);
+        if (mobBtn) {
+          mobBtn.classList.remove('text-wine-900', 'font-bold');
+          mobBtn.classList.add('text-stone-600');
+        }
+      });
+
+      document.getElementById(`${tabId}-view`).classList.remove('hidden');
+      
+      const activeBtn = document.getElementById(`nav-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-white', 'text-wine-900', 'shadow-sm');
+        activeBtn.classList.remove('text-stone-600');
+      }
+      
+      const activeMobBtn = document.getElementById(`mobile-nav-${tabId}`);
+      if (activeMobBtn) {
+        activeMobBtn.classList.add('text-wine-900', 'font-bold');
+        activeMobBtn.classList.remove('text-stone-600');
+      }
+    }
+
+    // Day Switcher Logic
+    function showDay(dayId) {
+      document.querySelectorAll('.day-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.day-tab').forEach(btn => {
+        btn.classList.remove('bg-wine-900', 'text-white', 'shadow-sm');
+        btn.classList.add('bg-white', 'text-stone-600');
+      });
+
+      document.getElementById(dayId).classList.remove('hidden');
+      const activeTab = document.getElementById(`tab-${dayId}`);
+      if (activeTab) {
+        activeTab.classList.add('bg-wine-900', 'text-white', 'shadow-sm');
+        activeTab.classList.remove('bg-white', 'text-stone-600');
+      }
+    }
+
+    // Matrix Filtering
+    function filterMatrix() {
+      const query = document.getElementById('matrixSearch').value.toLowerCase();
+      document.querySelectorAll('.matrix-card').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? 'block' : 'none';
+      });
+    }
+
+    function setMatrixFilter(type) {
+      document.querySelectorAll('.matrix-btn').forEach(btn => {
+        btn.classList.remove('bg-wine-900', 'text-white');
+        btn.classList.add('bg-stone-100', 'text-stone-600');
+      });
+      event.target.classList.add('bg-wine-900', 'text-white');
+
+      document.querySelectorAll('.matrix-card').forEach(card => {
+        if (type === 'all' || card.dataset.type === type) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Chart.js Visualizations
+    window.addEventListener('DOMContentLoaded', () => {
+      // Category Breakdown Chart
+      const ctxCat = document.getElementById('categoryChart').getContext('2d');
+      new Chart(ctxCat, {
+        type: 'doughnut',
+        data: {
+          labels: ['Wineries (7)', 'Fine Dining (2)', 'Italian Pasta (1)', 'Tavern Lunch (1)', 'Craft Brewery (1)'],
+          datasets: [{
+            data: [7, 2, 1, 1, 1],
+            backgroundColor: ['#6e2010', '#d97706', '#059669', '#b45309', '#7c3aed']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } }
+        }
+      });
+
+      // Culinary & Beverage Profile Chart
+      const ctxProf = document.getElementById('profileChart').getContext('2d');
+      new Chart(ctxProf, {
+        type: 'bar',
+        data: {
+          labels: ['Wine Flights', 'Fine Dining', 'Handcrafted Pasta', 'Smoked BBQ / Wings', 'Craft Beer / Cider'],
+          datasets: [{
+            label: 'Stops',
+            data: [7, 2, 1, 1, 2],
+            backgroundColor: '#6e2010'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+          plugins: { legend: { display: false } }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
